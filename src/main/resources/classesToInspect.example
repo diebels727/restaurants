@@ -1,0 +1,14 @@
+Use this file to limit the scope of inspection Koverse does when this addon is uploaded. 
+
+To use this file, remove all contents, rename to just "classesToInspect" and enter the full class path to your custom Sources, Transforms, Sinks, etc with line return separations. 
+
+Here is an example contents for this file. Be sure to have no empty lines.
+
+com.koverse.foo.MyCustomApplication
+com.koverse.foo.HDFSSource
+com.koverse.foo.MyCustomRecordSink
+com.koverse.foo.MyCustomFileSink
+com.koverse.foo.MyCustomTransform
+com.koverse.foo.MyCustomSource
+com.koverse.foo.MyCustomImportTransform
+com.koverse.foo.MyCustomSource
