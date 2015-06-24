@@ -1,8 +1,1 @@
 com.koverse.restaurants.MyCustomApplication
-com.koverse.restaurants.HDFSSource
-com.koverse.restaurants.MyCustomRecordSink
-com.koverse.restaurants.MyCustomFileSink
-com.koverse.restaurants.MyCustomTransform
-com.koverse.restaurants.MyCustomSource
-com.koverse.restaurants.MyCustomImportTransform
-com.koverse.restaurants.MyCustomSource
