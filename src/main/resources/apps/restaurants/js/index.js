@@ -45,6 +45,23 @@ app.controller('mapController',['$scope',function($scope) {
     debugger;
   }
 
+  $scope.loadRestaurantLocations = function() {
+    Koverse.getDataCollectionByName('geocoded-restaurants',function(dataCollectionResponse) {
+      $scope.dataCollection = dataCollectionResponse.dataCollection;
+      Koverse.performQuery("{$any: *}",[$scope.dataCollection.id],function(response) {
+        if ( !response.success) { debugger };
+        $scope.records = response.records;
+        $scope.markers = []
+        $scope.markers = _.map($scope.records,function(record) {
+          var fields = record.fields;
+          var record = { id: fields.CAMIS, coords: { longitude: fields.Longitude,latitude: fields.Latitude} };
+          return record;
+        });
+      },500,0,false);
+    });
+
+  }
+
   $scope.map = { center: { latitude: 40.7903, longitude: -73.9597 }, zoom: 10 };
 }]);
 
