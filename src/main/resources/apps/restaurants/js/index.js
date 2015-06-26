@@ -35,21 +35,18 @@ $(function() {
 var app = angular.module('restApp',['uiGmapgoogle-maps']);
 
 app.controller('mapController',['$scope',function($scope) {
-  $scope.markers = [
-    {id: 41670166,coords: {longitude: -73.97387341,latitude: 40.68614555},icon: 'images/blue_marker.png' },
-    {id: 41670166,coords: {longitude: -72.97387341,latitude: 41.68614555},icon: 'images/blue_marker.png' },
-    {id: 41670151,coords: {longitude: -73.98124063,latitude: 40.76397698},icon: 'images/blue_marker.png' }
-  ];
+  $scope.markers = [];
 
   $scope.enterDebug = function() {
     debugger;
   }
 
-  $scope.loadRestaurantLocations = function() {
+  $scope.loadRestaurantLocations = function(numberOfRestaurants) {
     Koverse.getDataCollectionByName('geocoded-restaurants',function(dataCollectionResponse) {
       $scope.dataCollection = dataCollectionResponse.dataCollection;
       Koverse.performQuery("{$any: *}",[$scope.dataCollection.id],function(response) {
         if ( !response.success) { debugger };
+        $scope.markersPrevLength = $scope.markers.length;
         $scope.records = response.records;
         $scope.markers = []
         $scope.markers = _.map($scope.records,function(record) {
@@ -57,12 +54,23 @@ app.controller('mapController',['$scope',function($scope) {
           var record = { id: fields.CAMIS, coords: { longitude: fields.Longitude,latitude: fields.Latitude} };
           return record;
         });
-      },500,0,false);
+      },numberOfRestaurants,0,false);
     });
-
   }
 
-  $scope.map = { center: { latitude: 40.7903, longitude: -73.9597 }, zoom: 10 };
+
+  $scope.map = {
+    control: {},
+    center: {
+      latitude: 40.7903,
+      longitude: -73.9597
+      },
+    zoom: 10,
+    refresh: function() {
+      return $scope.markers.length != $scope.markersPrevLength;
+    }
+  };
+
 }]);
 
 app.controller('markerController',['$scope',function($scope) {

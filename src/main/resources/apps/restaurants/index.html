@@ -31,7 +31,14 @@
     <div class="container">
       <h1>Restaurant Violations</h1>
       <button class="btn btn-primary" ng-click="enterDebug()">Debug</button>
-      <button class="btn btn-primary" ng-click="loadRestaurantLocations()">Load</button>
+      <select ng-model="selected" ng-change="loadRestaurantLocations(selected)">
+        <option value=50>50</option>
+        <option value=250>250</option>
+        <option value=500>500</option>
+        <option value=1000>1000</option>
+      </select>
+      {{KoverseApplication.EVENT_READY}}
+      <button class="col-md-2 btn btn-success" ng-click="map.refresh()">Refresh Map</button>
     </div>
 
     <div class="container">
