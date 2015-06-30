@@ -42,19 +42,24 @@ app.controller('mapController',['$scope',function($scope) {
   }
 
   $scope.loadRestaurantLocations = function(numberOfRestaurants) {
-    Koverse.getDataCollectionByName('geocoded-restaurants',function(dataCollectionResponse) {
-      $scope.dataCollection = dataCollectionResponse.dataCollection;
-      Koverse.performQuery("{$any: *}",[$scope.dataCollection.id],function(response) {
-        if ( !response.success) { debugger };
-        $scope.markersPrevLength = $scope.markers.length;
-        $scope.records = response.records;
-        $scope.markers = []
-        $scope.markers = _.map($scope.records,function(record) {
-          var fields = record.fields;
-          var record = { id: fields.CAMIS, coords: { longitude: fields.Longitude,latitude: fields.Latitude} };
-          return record;
-        });
-      },numberOfRestaurants,0,false);
+    $scope.$apply(function(){
+
+      Koverse.getDataCollectionByName('geocoded-restaurants',function(dataCollectionResponse) {
+        $scope.dataCollection = dataCollectionResponse.dataCollection;
+
+        Koverse.performQuery("{$any: *}",[$scope.dataCollection.id],function(response) {
+          if ( !response.success) { debugger };
+          $scope.markersPrevLength = $scope.markers.length;
+          $scope.records = response.records;
+          $scope.markers = []
+          $scope.markers = _.map($scope.records,function(record) {
+            var fields = record.fields;
+            var record = { id: fields.CAMIS, coords: { longitude: fields.Longitude,latitude: fields.Latitude} };
+            return record;
+          });
+        },numberOfRestaurants,100,false);
+      });
+
     });
   }
 
