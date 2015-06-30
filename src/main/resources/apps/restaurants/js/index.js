@@ -32,18 +32,31 @@
 //
 // });
 
+
 function enterDebug() {
   debugger;
 };
 
-function initialize() {
-  var mapOptions = {
-    center: { lat: -34.397, lng: 150.644},
-    zoom: 8
-  };
-  var map = new google.maps.Map(document.getElementById('map-canvas'),
-      mapOptions);
-}
-google.maps.event.addDomListener(window, 'load', initialize);
+$(function() {
+  function initialize() {
+    var mapOptions = {
+      center: {
+         lat: 40.7903,
+         lng: -73.9597
+      },
+      zoom: 10
+    };
+    var map = new google.maps.Map(document.getElementById('map-canvas'),
+        mapOptions);
+
+
+    var marker = new google.maps.Marker({
+      position: map.getCenter(),
+      map: map
+    });
+  }
+
+  google.maps.event.addDomListener(window, 'load', initialize);
+});
 
 
