@@ -26,14 +26,11 @@ app.controller('applicationController',['$scope',function($scope) {
     Koverse.addEventListener($scope.koverseIsReady, function() {
       console.log("[Koverse] Ready2.");
 
-      Koverse.getDataCollectionByName('violators',function(dataCollectionResponse) {
+      Koverse.getDataCollectionByName('georestaurants',function(dataCollectionResponse) {
         $scope.dataCollection = dataCollectionResponse.dataCollection;
         Koverse.performQuery("{$any: *}",[$scope.dataCollection.id],function(response) {
           $scope.records = response.records;
-          //var record = $scope.records.pop();
-
           _.each($scope.records,function(record) {
-            //var restaurant = record.fields.restaurant.pop()
             var fields = record.fields;
             var latLng = new google.maps.LatLng(fields.Latitude,fields.Longitude)
             var marker = new google.maps.Marker({
@@ -43,7 +40,7 @@ app.controller('applicationController',['$scope',function($scope) {
             $scope.markers.push(marker);
           });
           $scope.mc = new MarkerClusterer($scope.map,$scope.markers);
-        },2,0,false);
+        },200,0,false);
       });
 
 
