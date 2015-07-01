@@ -1,6 +1,3 @@
-function enterDebug() {
-  debugger;
-};
 
 
 var app = angular.module('restApp',[])
@@ -15,18 +12,39 @@ app.controller('applicationController',['$scope',function($scope) {
     };
 
     $scope.map = new google.maps.Map(document.getElementById('map-canvas'),$scope.mapOptions);
-
     $scope.markers = [];
-    for (var i = 0; i < 10000; i++) {
-      var center = $scope.map.getCenter()
+    $scope.koverseIsReady = KoverseApplication.EVENT_READY;
 
-      var latLng = new google.maps.LatLng(center.lat() + Math.random(-0.01,0.01),center.lng()+Math.random(-0.01,0.01));
-      var marker = new google.maps.Marker({'position': latLng});
-      $scope.markers.push(marker);
-    }
+    Koverse.addEventListener($scope.koverseIsReady, function() {
+      console.log("[Koverse] Ready1.");
+      Koverse.getDataCollectionByName('violators',function(dataCollectionResponse) {
+        $scope.dataCollection = dataCollectionResponse.dataCollection;
+      });
+    });
 
-    $scope.mc = new MarkerClusterer($scope.map,$scope.markers);
+    Koverse.addEventListener($scope.koverseIsReady, function() {
+      console.log("[Koverse] Ready2.");
+      Koverse.performQuery("{$any: *}",[$scope.dataCollection],function(response) {
+        $scope.records = response.records;
+        _.each($scope.records,function(record) {
+          var fields = record.fields;
+          var latLng = new google.maps.LatLng(fields.Latitude,fields.Longitude)
+          var marker = new google.maps.Marker({
+            'position': latLng
+          });
+          console.log("[Koverse] Will push marker.");
+          $scope.markers.push(marker);
+        });
+        $scope.mc = new MarkerClusterer($scope.map,$scope.markers);
+      },1000,0,false);
+
+    });
+
     google.maps.event.addDomListener(window, 'load');
+
+    $scope.debug = function() {
+      debugger;
+    };
 }]);
 
 
