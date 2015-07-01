@@ -33,9 +33,10 @@ app.controller('applicationController',['$scope',function($scope) {
         console.log("[Koverse] query: "+query);
 
         Koverse.performQuery(query,[violatorsCollection.id], function(response) {
-          $scope.restaurantResponse = response.records;
-          $scope.restaurantResponse
-        },1,0,false);
+          $scope.violatorResponse = response;
+          $scope.violatorRecords = response.records.pop();
+          $scope.violations = $scope.violatorRecords.fields.restaurants;
+        },20,0,false);
 
       });
 
