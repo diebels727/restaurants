@@ -22,6 +22,25 @@ app.controller('applicationController',['$scope',function($scope) {
       //   $scope.dataCollection = dataCollectionResponse.dataCollection;
       // });
     // });
+    $scope.onMarkerClick = function(pq) {
+      console.log("[Koverse] Will click.");
+      var title = this.title;
+
+      Koverse.getDataCollectionByName('violators',function(violatorsResponse) {
+        var violatorsCollection = violatorsResponse.dataCollection;
+        console.log("[Koverse] violatorsCollection.id: " + violatorsCollection.id);
+        var query = "group: "+title;
+        console.log("[Koverse] query: "+query);
+
+        Koverse.performQuery(query,[violatorsCollection.id], function(response) {
+          $scope.restaurantResponse = response.records;
+          $scope.restaurantResponse
+        },1,0,false);
+
+      });
+
+      console.log("[Koverse] Did click.");
+    };
 
     Koverse.addEventListener($scope.koverseIsReady, function() {
       console.log("[Koverse] Ready2.");
@@ -35,13 +54,11 @@ app.controller('applicationController',['$scope',function($scope) {
             var camis = fields.CAMIS.toString();
             var latLng = new google.maps.LatLng(fields.Latitude,fields.Longitude)
             var marker = new google.maps.Marker({
-              'position': latLng,
+              position: latLng,
               title: camis
             });
 
-            google.maps.event.addListener(marker, 'click', function() {
-               alert("foo");
-             });
+            google.maps.event.addListener(marker, 'click',$scope.onMarkerClick);
 
             $scope.markers.push(marker);
           });
