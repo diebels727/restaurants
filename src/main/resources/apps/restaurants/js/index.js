@@ -67,7 +67,7 @@ app.controller('applicationController',['$scope',function($scope) {
             $scope.markers.push(marker);
           });
           $scope.mc = new MarkerClusterer($scope.map,$scope.markers);
-        },200,0,false);
+        },500,0,false);
       });
 
 

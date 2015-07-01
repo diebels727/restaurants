@@ -31,8 +31,10 @@
   </head>
 
   <div ng-controller="applicationController">
+    <!--<button class="btn btn-primary" ng-click="debug()">Debug</button>-->
+
     <div class="container" style="background-color: black;color: white;">
-      <h1>NYC Restaurant Healthcode Violations</h1>
+      <h1>NYC Restaurant Inspection Results</h1>
     </div>
 
     <div class="container">
@@ -40,8 +42,25 @@
     </div>
 
     <div class="container">
-     <button class="btn btn-primary" ng-click="debug()">Debug</button>
-      {{violations}}
+
+      <table style="table-layout: fixed;border: 1px solid black;">
+        <tr>
+          <th width="80%">Violation</th>
+          <th width="10%">Code</th>
+          <th width="10%">Inspection Date</th>
+        </tr>
+        <tr ng-show="violations == null">
+          <td colspan="3"><h1>Click a marker to see inspection results.</h1></td>
+        </tr>
+        <tr ng-show="violations.length == 1">
+          <td colspan="3"><h1>No Results for Restaurant ID {{violations[0].CAMIS}}</h1></td>
+        </tr>
+        <tr ng-repeat="violation in violations" ng-show="violations.length > 1" style="border: 1px solid black;">
+          <td style="border: 1px solid black;">{{violation.VIOLATIONDESCRIPTION}}</td>
+          <td style="border: 1px solid black;">{{violation.VIOLATIONCODE}}</td>
+          <td style="border: 1px solid black;">{{violation.INSPECTIONDATE}}</td>
+        </tr>
+      <table>
     </div>
 
 
