@@ -32,11 +32,17 @@ app.controller('applicationController',['$scope',function($scope) {
           $scope.records = response.records;
           _.each($scope.records,function(record) {
             var fields = record.fields;
+            var camis = fields.CAMIS.toString();
             var latLng = new google.maps.LatLng(fields.Latitude,fields.Longitude)
             var marker = new google.maps.Marker({
-              'position': latLng
+              'position': latLng,
+              title: camis
             });
-            console.log("[Koverse] Will push marker.");
+
+            google.maps.event.addListener(marker, 'click', function() {
+               alert("foo");
+             });
+
             $scope.markers.push(marker);
           });
           $scope.mc = new MarkerClusterer($scope.map,$scope.markers);
